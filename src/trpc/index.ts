@@ -58,7 +58,19 @@ export const appRouter = router({
         }
       })
       return file
+    }),
+    getFile: privateProcedure.input(z.object({key:z.string()})).mutation(async({ctx,input})=>{
+      const {userId}=ctx
+      const file =await db.file.findFirst({
+        where:{
+          key:input.key,
+          userId,
+        }
+      })
+      if(!file){new TRPCError({code:"NOT_FOUND"})}
+      return file
     })
+
 });
  
 // Export type router type signature,
