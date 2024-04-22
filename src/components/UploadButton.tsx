@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "./ui/button"
 import { DialogContent } from "./ui/dialog"
 import Dropzone from 'react-dropzone'
-import { Cloud, File } from "lucide-react"
+import { Cloud, File, Loader2 } from "lucide-react"
 import { Progress } from "./ui/progress"
 import { resolve } from "path"
 import { useUploadThing } from "@/lib/uploadthing"
@@ -18,9 +18,10 @@ const UploadDropZone=()=>{
     const router = useRouter()
     const [isUploading,setIsUploading] =useState(false)
     const [uploadProgress,setUploadProgress] =useState(0)
-    const {startUpload}= useUploadThing("pdfUploader")
+    
     const { toast } = useToast()
-    const {mutate:startPolling}=trpc.getFile.useMutation({
+    const {startUpload}= useUploadThing("pdfUploader")
+    const {mutate:startPolling} = trpc.getFile.useMutation({
         onSuccess:(file)=>{
             router.push(`/dashboard/${file.id}`)
         },
@@ -41,8 +42,10 @@ const UploadDropZone=()=>{
         return interval
     }
     return <Dropzone multiple={false} onDrop={
-        async (acceptedFile)=>{setIsUploading(true)
+        async (acceptedFile)=>{
+            setIsUploading(true)
             const progressInterval= startSumilateProgress()
+            //it will upload and add it to db , the logic of adding to db is under core.ts
             const res= await startUpload(acceptedFile)
             if(!res){
                return toast({
@@ -70,7 +73,7 @@ const UploadDropZone=()=>{
 
         }}>
         {({getRootProps,getInputProps,acceptedFiles})=>(
-            <div {...getRootProps()} className="border h-64 m4 border-dashed border-gray-300 rounded-lg">
+            <div {...getRootProps()} className="border h-72 m-4 border-dashed border-gray-300 rounded-lg">
                 <div className="flex items-center justify-center h-full w-full">
                     <input {...getInputProps()} />
                     <label htmlFor="dropzone-file"
@@ -100,6 +103,12 @@ const UploadDropZone=()=>{
                         {isUploading ?(
                             <div className="w-full mt-4 max-w-xs mx-auto">
                                 <Progress value={uploadProgress} className="h-1 w-full bg-zinc-200"/>
+                                {uploadProgress === 100 ? (
+                                  <div className='flex gap-1 items-center justify-center text-sm text-zinc-700 text-center pt-2'>
+                                  <Loader2 className='h-3 h w-3 animate-spin' />
+                                         Redirecting...
+                                         </div>
+                                ) : null}
                             </div>
                         ):null
 
