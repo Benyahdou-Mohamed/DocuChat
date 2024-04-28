@@ -19,7 +19,8 @@ export const ChatContext = createContext<StreamResponse>({
     isLoading:false,
 })
 
-export const chatContextProvider=({fileId,children}:Props)=>{
+export const chatContextProvider=async({fileId,children}:Props)=>{
+    
     const [message,setMessage] =useState('')
     const [ isLoading,setIsLoading] =useState(false)
     const {toast}=useToast()

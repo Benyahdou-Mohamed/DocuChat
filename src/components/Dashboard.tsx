@@ -12,6 +12,7 @@ import { Toaster } from "./ui/toaster"
 
 const Dashboard = () => {
   const utils =trpc.useContext()
+
   
   const {data:files,isLoading}= trpc.getUserFiles.useQuery()
   const { toast } = useToast()
@@ -19,7 +20,6 @@ const Dashboard = () => {
   const {mutate:deleteFile}=trpc.deleteFile.useMutation({
     onSuccess:()=>{
       toast({
-
         description: "The file has been deleted successfully",
       })
       utils.getUserFiles.invalidate()
@@ -27,6 +27,7 @@ const Dashboard = () => {
     }
   }
   )
+  
   return (
     <main className="mx-auto max-w-7xl md:p-10">
         <div className="mt-8 flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row sm:items-center sm:gap-0">

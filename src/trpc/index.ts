@@ -77,6 +77,7 @@ export const appRouter = router({
           userId:ctx.userId
         }
        })
+      
       if(!file)return {status:"PENDING" as const} 
       return {status: file.uploadStatus}
     })
