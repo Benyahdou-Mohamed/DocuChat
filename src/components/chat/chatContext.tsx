@@ -49,6 +49,7 @@ export const chatContextProvider=async({fileId,children}:Props)=>{
     const addMessage =()=> sendMessage({message})
     return(
        <ChatContext.Provider value={{message,addMessage,handleInputChange,isLoading}}>
+            dsfdsfsd
             {children}
        </ChatContext.Provider> 
     )

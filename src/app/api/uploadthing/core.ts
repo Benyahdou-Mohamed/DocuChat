@@ -53,7 +53,7 @@ export const ourFileRouter = {
         
 
          const embeddings = new OpenAIEmbeddings({
-             openAIApiKey: "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",
+             openAIApiKey: "sk-proj-rDeq52uCoWPGdT5iN937T3BlbkFJehzuMFPSyZprebItv2Qt",
          })
 
          await PineconeStore.fromDocuments(
